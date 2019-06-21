@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import cn.zhouyafeng.itchat4j.beans.tulin.InputText;
+import cn.zhouyafeng.itchat4j.beans.tulin.Perception;
+import cn.zhouyafeng.itchat4j.beans.tulin.UserInfo;
 import org.apache.http.HttpEntity;
 import org.apache.http.util.EntityUtils;
 
@@ -31,22 +34,25 @@ import cn.zhouyafeng.itchat4j.utils.tools.DownloadTools;
 public class TulingRobot implements IMsgHandlerFace {
 	Logger logger = Logger.getLogger("TulingRobot");
 	MyHttpClient myHttpClient = Core.getInstance().getMyHttpClient();
-	String url = "http://www.tuling123.com/openapi/api";
-	String apiKey = "597b34bea4ec4c85a775c469c84b6817"; // 这里是我申请的图灵机器人API接口，每天只能5000次调用，建议自己去申请一个，免费的:)
-
+	String url = "http://openapi.tuling123.com/openapi/api/v2";
+	String apiKey = "ec79cf4707ea4b14959a8e43169cb461"; // 这里是我申请的图灵机器人API接口，每天只能5000次调用，建议自己去申请一个，免费的:)
+	String userId = "468473";
 	@Override
 	public String textMsgHandle(BaseMsg msg) {
 		String result = "";
 		String text = msg.getText();
-		Map<String, String> paramMap = new HashMap<String, String>();
-		paramMap.put("key", apiKey);
+		Map<String, Object> paramMap = new HashMap<>(16);
 		paramMap.put("info", text);
-		paramMap.put("userid", "123456");
+		paramMap.put("userInfo", new UserInfo(apiKey, userId));
+		Perception perception = new Perception();
+		perception.setInputText(new InputText(text));
+		paramMap.put("perception", perception);
 		String paramStr = JSON.toJSONString(paramMap);
 		try {
 			HttpEntity entity = myHttpClient.doPost(url, paramStr);
 			result = EntityUtils.toString(entity, "UTF-8");
 			JSONObject obj = JSON.parseObject(result);
+			System.out.println("obj:" + obj);
 			if (obj.getString("code").equals("100000")) {
 				result = obj.getString("text");
 			} else {
@@ -66,7 +72,7 @@ public class TulingRobot implements IMsgHandlerFace {
 	@Override
 	public String voiceMsgHandle(BaseMsg msg) {
 		String fileName = String.valueOf(new Date().getTime());
-		String voicePath = "D://itchat4j/voice" + File.separator + fileName + ".mp3";
+		String voicePath = "/home/harry/Desktop/wechat-code/chat-voice" + File.separator + fileName + ".mp3";
 		DownloadTools.getDownloadFn(msg, MsgTypeEnum.VOICE.getType(), voicePath);
 		return "收到语音";
 	}
@@ -74,14 +80,14 @@ public class TulingRobot implements IMsgHandlerFace {
 	@Override
 	public String viedoMsgHandle(BaseMsg msg) {
 		String fileName = String.valueOf(new Date().getTime());
-		String viedoPath = "D://itchat4j/viedo" + File.separator + fileName + ".mp4";
+		String viedoPath = "/home/harry/Desktop/wechat-code/chat-viedo" + File.separator + fileName + ".mp4";
 		DownloadTools.getDownloadFn(msg, MsgTypeEnum.VIEDO.getType(), viedoPath);
 		return "收到视频";
 	}
 
 	public static void main(String[] args) {
 		IMsgHandlerFace msgHandler = new TulingRobot();
-		Wechat wechat = new Wechat(msgHandler, "D://itchat4j/login");
+		Wechat wechat = new Wechat(msgHandler, "/home/harry/Desktop/wechat-code/chat-file");
 		wechat.start();
 	}
 

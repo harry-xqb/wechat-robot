@@ -66,7 +66,7 @@ public class LoginController {
 		LOG.info("6. 开启微信状态通知");
 		loginService.wxStatusNotify();
 
-		LOG.info("7. 清除。。。。");
+		LOG.info("7. 清除屏幕。。。。");
 		CommonTools.clearScreen();
 		LOG.info(String.format("欢迎回来， %s", core.getNickName()));
 

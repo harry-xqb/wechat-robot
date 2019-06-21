@@ -54,7 +54,7 @@ public class SimpleDemo implements IMsgHandlerFace {
 	@Override
 	public String picMsgHandle(BaseMsg msg) {
 		String fileName = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date());// 这里使用收到图片的时间作为文件名
-		String picPath = "D://itchat4j/pic" + File.separator + fileName + ".jpg"; // 调用此方法来保存图片
+		String picPath = "/home/harry/Desktop/wechat-code/chat-image" + File.separator + fileName + ".jpg"; // 调用此方法来保存图片
 		DownloadTools.getDownloadFn(msg, MsgTypeEnum.PIC.getType(), picPath); // 保存图片的路径
 		return "图片保存成功";
 	}
@@ -62,7 +62,7 @@ public class SimpleDemo implements IMsgHandlerFace {
 	@Override
 	public String voiceMsgHandle(BaseMsg msg) {
 		String fileName = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date());
-		String voicePath = "D://itchat4j/voice" + File.separator + fileName + ".mp3";
+		String voicePath = "/home/harry/Desktop/wechat-code/chat-voice" + File.separator + fileName + ".mp3";
 		DownloadTools.getDownloadFn(msg, MsgTypeEnum.VOICE.getType(), voicePath);
 		return "声音保存成功";
 	}
@@ -70,7 +70,7 @@ public class SimpleDemo implements IMsgHandlerFace {
 	@Override
 	public String viedoMsgHandle(BaseMsg msg) {
 		String fileName = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date());
-		String viedoPath = "D://itchat4j/viedo" + File.separator + fileName + ".mp4";
+		String viedoPath = "/home/harry/Desktop/wechat-code/chat-viedo" + File.separator + fileName + ".mp4";
 		DownloadTools.getDownloadFn(msg, MsgTypeEnum.VIEDO.getType(), viedoPath);
 		return "视频保存成功";
 	}
@@ -100,7 +100,7 @@ public class SimpleDemo implements IMsgHandlerFace {
 	@Override
 	public String mediaMsgHandle(BaseMsg msg) {
 		String fileName = msg.getFileName();
-		String filePath = "D://itchat4j/file" + File.separator + fileName; // 这里是需要保存收到的文件路径，文件可以是任何格式如PDF，WORD，EXCEL等。
+		String filePath = "/home/harry/Desktop/wechat-code/chat-file" + File.separator + fileName; // 这里是需要保存收到的文件路径，文件可以是任何格式如PDF，WORD，EXCEL等。
 		DownloadTools.getDownloadFn(msg, MsgTypeEnum.MEDIA.getType(), filePath);
 		return "文件" + fileName + "保存成功";
 	}

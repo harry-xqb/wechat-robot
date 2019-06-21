@@ -56,6 +56,16 @@ public class CommonTools {
 				}
 			}
 			break;
+		case LINUX:
+			if (Config.getOsNameEnum().equals(OsNameEnum.LINUX)) {
+				Runtime runtime = Runtime.getRuntime();
+				try {
+					runtime.exec("xdg-open " + qrPath);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			break;
 
 		default:
 			break;

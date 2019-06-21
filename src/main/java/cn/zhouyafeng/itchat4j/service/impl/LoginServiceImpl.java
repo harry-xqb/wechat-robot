@@ -79,11 +79,9 @@ public class LoginServiceImpl implements ILoginService {
 			params.add(new BasicNameValuePair(LoginParaEnum.R.para(), String.valueOf(millis / 1579L)));
 			params.add(new BasicNameValuePair(LoginParaEnum._.para(), String.valueOf(millis)));
 			HttpEntity entity = httpClient.doGet(URLEnum.LOGIN_URL.getUrl(), params, true, null);
-
 			try {
 				String result = EntityUtils.toString(entity);
 				String status = checklogin(result);
-
 				if (ResultEnum.SUCCESS.getCode().equals(status)) {
 					processLoginInfo(result); // 处理结果
 					isLogin = true;
@@ -93,6 +91,7 @@ public class LoginServiceImpl implements ILoginService {
 				if (ResultEnum.WAIT_CONFIRM.getCode().equals(status)) {
 					LOG.info("请点击微信确认按钮，进行登陆");
 				}
+
 
 			} catch (Exception e) {
 				LOG.error("微信登陆异常！", e);
@@ -451,7 +450,6 @@ public class LoginServiceImpl implements ILoginService {
 	 *
 	 * @author https://github.com/yaphone
 	 * @date 2017年4月9日 下午12:16:26
-	 * @param result
 	 */
 	private void processLoginInfo(String loginContent) {
 		String regEx = "window.redirect_uri=\"(\\S+)\";";
